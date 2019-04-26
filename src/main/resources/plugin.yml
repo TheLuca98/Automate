@@ -1,0 +1,5 @@
+name: 'Automate'
+version: '${project.version}'
+main: 'io.github.theluca98.automate.Automate'
+authors: ['Luca', 'chielui']
+api-version: '1.13'
