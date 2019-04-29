@@ -34,3 +34,17 @@ DispenserPlaceModule:
     - minecraft:shulker_box
     - minecraft:white_shulker_box
     - minecraft:yellow_shulker_box
+  # Mappings can turn items into corresponding blocks (e.g. crops)
+  mappings:
+    - from: minecraft:wheat_seeds
+      to: minecraft:wheat
+    - from: minecraft:carrot
+      to: minecraft:carrots
+    - from: minecraft:potato
+      to: minecraft:potatoes
+    - from: minecraft:beetroot_seeds
+      to: minecraft:beetroots
+    - from: minecraft:melon_seeds
+      to: minecraft:melon_stem
+    - from: minecraft:pumpkin_seeds
+      to: minecraft:pumpkin_stem

@@ -11,12 +11,13 @@ object DispenserPlaceModule : AutomateModule {
 
     @EventHandler
     private fun onDispense(e: BlockDispenseEvent) {
-        if (e.block.type == Material.DISPENSER && e.item.type.isSolid && !isIgnored(e.item.type)) {
+        val mapping = getMapping(e.item.type)
+        if (e.block.type == Material.DISPENSER && mapping.isBlock && !isIgnored(e.item.type)) {
             val dispenser = e.block.blockData as Dispenser
             val relative = e.block.getRelative(dispenser.facing)
             if (relative.isEmpty) {
                 e.isCancelled = true
-                relative.type = e.item.type
+                relative.type = mapping
                 schedule {
                     val container = e.block.state as Container
                     container.inventory.removeItem(e.item)
@@ -27,6 +28,12 @@ object DispenserPlaceModule : AutomateModule {
 
     private fun isIgnored(type: Material): Boolean {
         return getConfig()?.getStringList("ignore")?.contains(type.key.toString()) ?: false
+    }
+
+    private fun getMapping(type: Material): Material {
+        val map = getConfig()?.getMapList("mappings")
+        val data = map?.first { it["from"]?.equals(type.key.toString()) ?: false }
+        return Material.matchMaterial(data?.get("to") as String) ?: type
     }
 
 }
