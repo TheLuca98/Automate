@@ -11,9 +11,10 @@ object PistonBreakModule : AutomateModule {
     @EventHandler
     private fun onPistonExtend(e: BlockPistonExtendEvent) {
         val piston = e.block.blockData as Piston
-        if (e.blocks.size >= 2 && e.blocks[0].type == Material.END_ROD) {
+        val i = e.blocks.map { it.type }.indexOf(Material.END_ROD)
+        if (i >= 0 && e.blocks.size > i + 1) {
             schedule {
-                e.blocks[1].getRelative(piston.facing).breakNaturally()
+                e.blocks[i + 1].getRelative(piston.facing).breakNaturally()
             }
         }
     }

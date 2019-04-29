@@ -14,6 +14,7 @@ class Automate : JavaPlugin() {
 
     override fun onEnable() {
         plugin = this
+        saveDefaultConfig()
         modules.forEach { it.enable() }
     }
 
