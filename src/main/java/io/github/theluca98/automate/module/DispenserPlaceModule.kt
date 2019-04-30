@@ -14,10 +14,10 @@ object DispenserPlaceModule : AutomateModule {
         val mapping = getMapping(e.item.type)
         if (e.block.type == Material.DISPENSER && mapping.isBlock && !isIgnored(e.item.type)) {
             val dispenser = e.block.blockData as Dispenser
-            val relative = e.block.getRelative(dispenser.facing)
-            if (relative.isEmpty) {
+            val target = e.block.getRelative(dispenser.facing)
+            if (target.isEmpty) {
                 e.isCancelled = true
-                relative.type = mapping
+                target.setType(mapping, true)
                 schedule {
                     val container = e.block.state as Container
                     container.inventory.removeItem(e.item)
@@ -32,8 +32,12 @@ object DispenserPlaceModule : AutomateModule {
 
     private fun getMapping(type: Material): Material {
         val map = getConfig()?.getMapList("mappings")
-        val data = map?.first { it["from"]?.equals(type.key.toString()) ?: false }
-        return Material.matchMaterial(data?.get("to") as String) ?: type
+        val data = map?.firstOrNull { it["from"]?.equals(type.key.toString()) ?: false }
+        return if (data != null) {
+            Material.matchMaterial(data["to"] as String) ?: type
+        } else {
+            type
+        }
     }
 
 }
